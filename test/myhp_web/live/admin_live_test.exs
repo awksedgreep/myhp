@@ -45,10 +45,10 @@ defmodule MyhpWeb.AdminLiveTest do
       {:ok, social_live, _html} = live(conn, ~p"/admin/social")
 
       social_data = %{
-        twitter: "https://twitter.com/example",
-        linkedin: "https://linkedin.com/in/example",
-        github: "https://github.com/example",
-        website: "https://example.com"
+        "twitter" => "https://twitter.com/example",
+        "linkedin" => "https://linkedin.com/in/example",
+        "github" => "https://github.com/example",
+        "website" => "https://example.com"
       }
 
       # Check if we're on the correct page and if form exists
@@ -133,9 +133,6 @@ defmodule MyhpWeb.AdminLiveTest do
       {:ok, _user_live, html} = live(conn, ~p"/admin/users")
 
       # Admin user should not see Ban/Demote buttons for themselves
-      # Create a pattern to check if Ban button appears in the same row as their email
-      import Regex
-      
       # Check that there's no Ban button in the same table row as the admin's email
       refute Regex.match?(~r/#{Regex.escape(admin_user.email)}.*?Ban.*?button/s, html)
       refute Regex.match?(~r/#{Regex.escape(admin_user.email)}.*?Demote.*?button/s, html)

@@ -49,8 +49,8 @@ defmodule MyhpWeb.MessageLiveTest do
     end
 
     test "displays recent messages", %{conn: conn, user: user} do
-      message1 = message_fixture(%{user_id: user.id, content: "Hello world!"})
-      message2 = message_fixture(%{user_id: user.id, content: "How is everyone?"})
+      _message1 = message_fixture(%{user_id: user.id, content: "Hello world!"})
+      _message2 = message_fixture(%{user_id: user.id, content: "How is everyone?"})
 
       {:ok, _index_live, html} = 
         conn

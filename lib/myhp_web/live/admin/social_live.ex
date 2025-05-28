@@ -230,10 +230,10 @@ defmodule MyhpWeb.Admin.SocialLive do
     # In a real app, you'd store this in the database
     # For now, return some defaults
     %{
-      twitter: "",
-      linkedin: "",
-      github: "",
-      website: ""
+      "twitter" => "",
+      "linkedin" => "",
+      "github" => "",
+      "website" => ""
     }
   end
 
