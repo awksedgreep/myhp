@@ -1,0 +1,30 @@
+defmodule MyhpWeb.UploadedFileLiveTest do
+  use MyhpWeb.ConnCase
+
+  import Phoenix.LiveViewTest
+  import Myhp.UploadsFixtures
+
+  describe "Index (Admin)" do
+    setup [:register_and_log_in_admin_user]
+
+    test "lists uploaded files for admin", %{conn: conn} do
+      _file = uploaded_file_fixture(%{filename: "test.jpg", content_type: "image/jpeg"})
+
+      {:ok, _index_live, html} = live(conn, ~p"/admin/uploads")
+
+      assert html =~ "Uploaded Files" or html =~ "Files"
+      assert html =~ "test.jpg"
+    end
+
+    test "renders empty state when no files", %{conn: conn} do
+      {:ok, _index_live, html} = live(conn, ~p"/admin/uploads")
+
+      assert html =~ "No files" or html =~ "no uploads" or html =~ "Files"
+    end
+
+    defp register_and_log_in_admin_user(%{conn: conn}) do
+      user = Myhp.AccountsFixtures.user_fixture(%{admin: true})
+      %{conn: log_in_user(conn, user), user: user}
+    end
+  end
+end

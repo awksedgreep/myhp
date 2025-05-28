@@ -1,0 +1,262 @@
+defmodule MyhpWeb.Live.IntegrationTest do
+  use MyhpWeb.ConnCase
+  import Phoenix.LiveViewTest
+
+  describe "blog post live integration" do
+    setup do
+      user = Myhp.AccountsFixtures.user_fixture()
+      admin = Myhp.AccountsFixtures.user_fixture(%{admin: true})
+      post = Myhp.BlogFixtures.post_fixture(%{user_id: user.id, published: true})
+      
+      %{user: user, admin: admin, post: post}
+    end
+
+    test "renders post show page with comments section", %{conn: conn, post: post} do
+      {:ok, view, html} = live(conn, ~p"/blog/#{post.id}")
+      
+      assert html =~ post.title
+      assert html =~ post.content
+      assert has_element?(view, "#comments-section")
+    end
+
+    test "authenticated user can add comment", %{conn: conn, user: user, post: post} do
+      conn = log_in_user(conn, user)
+      {:ok, view, _html} = live(conn, ~p"/blog/#{post.id}")
+      
+      # Fill and submit comment form
+      view
+      |> form("#comment-form", comment: %{content: "Great post!"})
+      |> render_submit()
+      
+      assert has_element?(view, "#comments", "Great post!")
+    end
+
+    test "unauthenticated user cannot see comment form", %{conn: conn, post: post} do
+      {:ok, _view, html} = live(conn, ~p"/blog/#{post.id}")
+      
+      refute html =~ "Add Comment"
+      refute html =~ "#comment-form"
+    end
+  end
+
+  describe "admin dashboard live integration" do
+    setup do
+      admin = Myhp.AccountsFixtures.user_fixture(%{admin: true})
+      user = Myhp.AccountsFixtures.user_fixture()
+      
+      %{admin: admin, user: user}
+    end
+
+    test "admin can view and manage users", %{conn: conn, admin: admin, user: user} do
+      conn = log_in_user(conn, admin)
+      {:ok, view, html} = live(conn, ~p"/admin")
+      
+      assert html =~ "Admin Dashboard"
+      assert html =~ user.email
+      
+      # Test ban user functionality
+      view
+      |> element("#ban-user-#{user.id}")
+      |> render_click()
+      
+      assert has_element?(view, "#unban-user-#{user.id}")
+    end
+
+    test "admin can toggle user admin status", %{conn: conn, admin: admin, user: user} do
+      conn = log_in_user(conn, admin) 
+      {:ok, view, _html} = live(conn, ~p"/admin")
+      
+      # Make user admin
+      view
+      |> element("#toggle-admin-#{user.id}")
+      |> render_click()
+      
+      # Should show updated status
+      assert has_element?(view, "[data-admin='true']", user.email)
+    end
+
+    test "non-admin cannot access admin dashboard", %{conn: conn, user: user} do
+      conn = log_in_user(conn, user)
+      
+      assert {:error, {:redirect, %{to: "/"}}} = live(conn, ~p"/admin")
+    end
+  end
+
+  describe "real-time chat integration" do
+    setup do
+      user1 = Myhp.AccountsFixtures.user_fixture(%{email: "user1@example.com"})
+      user2 = Myhp.AccountsFixtures.user_fixture(%{email: "user2@example.com"})
+      
+      %{user1: user1, user2: user2}
+    end
+
+    test "users can send and receive messages in real-time", %{conn: conn, user1: user1, user2: user2} do
+      # Start two live view sessions
+      conn1 = log_in_user(conn, user1)
+      conn2 = log_in_user(conn, user2)
+      
+      {:ok, view1, _html1} = live(conn1, ~p"/chat")
+      {:ok, view2, _html2} = live(conn2, ~p"/chat")
+      
+      # User1 sends a message
+      view1
+      |> form("#message-form", message: %{content: "Hello from user1!"})
+      |> render_submit()
+      
+      # Both views should show the message
+      assert has_element?(view1, "#messages", "Hello from user1!")
+      assert has_element?(view2, "#messages", "Hello from user1!")
+      
+      # User2 responds
+      view2
+      |> form("#message-form", message: %{content: "Hi back from user2!"})
+      |> render_submit()
+      
+      # Both views should show both messages
+      assert has_element?(view1, "#messages", "Hi back from user2!")
+      assert has_element?(view2, "#messages", "Hi back from user2!")
+    end
+
+    test "message history is loaded on connect", %{conn: conn, user1: user1, user2: user2} do
+      # Create some existing messages
+      Myhp.ChatFixtures.message_fixture(%{
+        user_id: user1.id,
+        content: "Previous message 1"
+      })
+      Myhp.ChatFixtures.message_fixture(%{
+        user_id: user2.id, 
+        content: "Previous message 2"
+      })
+      
+      conn = log_in_user(conn, user1)
+      {:ok, _view, html} = live(conn, ~p"/chat")
+      
+      assert html =~ "Previous message 1"
+      assert html =~ "Previous message 2"
+    end
+  end
+
+  describe "notifications live integration" do
+    setup do
+      user = Myhp.AccountsFixtures.user_fixture()
+      author = Myhp.AccountsFixtures.user_fixture()
+      post = Myhp.BlogFixtures.post_fixture(%{user_id: author.id, published: true})
+      
+      %{user: user, author: author, post: post}
+    end
+
+    test "user receives notification when someone comments on their post", %{conn: conn, author: author, post: post, user: user} do
+      # Author is viewing their notifications
+      conn1 = log_in_user(conn, author)
+      {:ok, view1, _html} = live(conn1, ~p"/notifications")
+      
+      # Another user comments on the post
+      conn2 = log_in_user(conn, user)
+      {:ok, view2, _html} = live(conn2, ~p"/blog/#{post.id}")
+      
+      view2
+      |> form("#comment-form", comment: %{content: "Nice post!"})
+      |> render_submit()
+      
+      # Author should see new notification
+      assert has_element?(view1, ".notification", "New comment on your post")
+    end
+
+    test "user can mark notifications as read", %{conn: conn, user: user} do
+      # Create a notification
+      notification = Myhp.NotificationFixtures.notification_fixture(%{
+        user_id: user.id,
+        message: "Test notification",
+        read: false
+      })
+      
+      conn = log_in_user(conn, user)
+      {:ok, view, _html} = live(conn, ~p"/notifications")
+      
+      # Mark as read
+      view
+      |> element("#mark-read-#{notification.id}")
+      |> render_click()
+      
+      assert has_element?(view, ".notification.read")
+    end
+  end
+
+  describe "portfolio project showcase" do
+    setup do
+      user = Myhp.AccountsFixtures.user_fixture()
+      project = Myhp.PortfolioFixtures.project_fixture()
+      
+      %{user: user, project: project}
+    end
+
+    test "renders project details with images and links", %{conn: conn, project: project} do
+      {:ok, _view, html} = live(conn, ~p"/portfolio/#{project.id}")
+      
+      assert html =~ project.title
+      assert html =~ project.description
+      assert html =~ project.github_url
+      assert html =~ project.live_url
+      assert html =~ project.technologies
+    end
+
+    test "admin can edit project from show page", %{conn: conn, project: project} do
+      admin = Myhp.AccountsFixtures.user_fixture(%{admin: true})
+      conn = log_in_user(conn, admin)
+      
+      {:ok, view, _html} = live(conn, ~p"/portfolio/#{project.id}")
+      
+      assert has_element?(view, "a", "Edit Project")
+      
+      # Click edit and verify form appears
+      view
+      |> element("a", "Edit Project")
+      |> render_click()
+      
+      assert_patch(view, ~p"/portfolio/#{project.id}/edit")
+    end
+  end
+
+  describe "search functionality integration" do
+    setup do
+      user = Myhp.AccountsFixtures.user_fixture()
+      
+      post = Myhp.BlogFixtures.post_fixture(%{
+        user_id: user.id,
+        published: true,
+        title: "Elixir Programming Guide",
+        content: "Learn Elixir programming language"
+      })
+      
+      project = Myhp.PortfolioFixtures.project_fixture(%{
+        title: "Elixir Chat App",
+        description: "Real-time chat built with Elixir and Phoenix"
+      })
+      
+      %{user: user, post: post, project: project}
+    end
+
+    test "search returns matching posts and projects", %{conn: conn, post: post, project: project} do
+      {:ok, view, _html} = live(conn, ~p"/search")
+      
+      # Search for "Elixir"
+      view
+      |> form("#search-form", search: %{query: "Elixir"})
+      |> render_submit()
+      
+      # Should show both post and project
+      assert has_element?(view, "#search-results", post.title)
+      assert has_element?(view, "#search-results", project.title)
+    end
+
+    test "search handles no results gracefully", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/search")
+      
+      view
+      |> form("#search-form", search: %{query: "nonexistent"})
+      |> render_submit()
+      
+      assert has_element?(view, "#search-results", "No results found")
+    end
+  end
+end

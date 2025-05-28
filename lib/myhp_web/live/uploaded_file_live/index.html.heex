@@ -1,0 +1,347 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">File Manager</h1>
+    <p class="mt-2 text-gray-600 dark:text-gray-400">Upload and manage your files</p>
+  </div>
+  
+<!-- Upload Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border dark:border-gray-700 p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+            />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Files</p>
+          <p class="text-2xl font-bold text-gray-900 dark:text-white">
+            {@upload_stats.total_files}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border dark:border-gray-700 p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg
+            class="w-8 h-8 text-green-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Images</p>
+          <p class="text-2xl font-bold text-gray-900 dark:text-white">{@upload_stats.images}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border dark:border-gray-700 p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg
+            class="w-8 h-8 text-purple-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Documents</p>
+          <p class="text-2xl font-bold text-gray-900 dark:text-white">
+            {@upload_stats.documents}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border dark:border-gray-700 p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg
+            class="w-8 h-8 text-orange-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+            />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Storage Used</p>
+          <p class="text-2xl font-bold text-gray-900 dark:text-white">
+            {format_file_size(@upload_stats.total_size)}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- Upload Section -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow border dark:border-gray-700 p-6 mb-8">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Upload Files</h2>
+
+    <.form for={%{}} phx-submit="save" phx-change="validate" class="space-y-4">
+      <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+        <div phx-drop-target={@uploads.files.ref} class="space-y-4">
+          <svg
+            class="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+            />
+          </svg>
+
+          <div>
+            <label for={@uploads.files.ref} class="cursor-pointer">
+              <span class="text-lg font-medium text-blue-600 hover:text-blue-500">
+                Choose files to upload
+              </span>
+              <input type="file" id={@uploads.files.ref} multiple class="sr-only" />
+            </label>
+            <p class="text-gray-500 dark:text-gray-400">or drag and drop files here</p>
+          </div>
+
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Supported formats: JPG, PNG, GIF, PDF, DOC, TXT (max 10MB each)
+          </p>
+        </div>
+      </div>
+      
+<!-- Upload Progress -->
+      <%= for entry <- @uploads.files.entries do %>
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-900 dark:text-white">
+              {entry.client_name}
+            </span>
+            <button
+              type="button"
+              phx-click="cancel-upload"
+              phx-value-ref={entry.ref}
+              class="text-red-600 hover:text-red-700"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div
+              class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              style={"width: #{entry.progress}%"}
+            >
+            </div>
+          </div>
+
+          <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <span>{entry.progress}%</span>
+            <span>{format_file_size(entry.client_size)}</span>
+          </div>
+
+          <%= for err <- upload_errors(@uploads.files, entry) do %>
+            <p class="text-red-600 text-sm mt-1">{error_to_string(err)}</p>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= for err <- upload_errors(@uploads.files) do %>
+        <p class="text-red-600 text-sm">{error_to_string(err)}</p>
+      <% end %>
+
+      <%= if length(@uploads.files.entries) > 0 do %>
+        <div class="flex justify-end">
+          <button
+            type="submit"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+          >
+            Upload Files
+          </button>
+        </div>
+      <% end %>
+    </.form>
+  </div>
+  
+<!-- Filter Tabs -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow border dark:border-gray-700 overflow-hidden">
+    <div class="border-b border-gray-200 dark:border-gray-700">
+      <nav class="flex space-x-8 px-6">
+        <%= for {type, label} <- [{"all", "All Files"}, {"image", "Images"}, {"document", "Documents"}, {"other", "Other"}] do %>
+          <button
+            phx-click="filter"
+            phx-value-type={type}
+            class={[
+              "py-4 px-1 border-b-2 font-medium text-sm transition-colors",
+              if(@filter_type == type,
+                do: "border-blue-500 text-blue-600 dark:text-blue-400",
+                else:
+                  "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300"
+              )
+            ]}
+          >
+            {label}
+          </button>
+        <% end %>
+      </nav>
+    </div>
+    
+<!-- File List -->
+    <div class="p-6">
+      <%= if Enum.empty?(@uploaded_files) do %>
+        <div class="text-center py-12">
+          <svg
+            class="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+            />
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
+            No files uploaded
+          </h3>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Get started by uploading your first file.
+          </p>
+        </div>
+      <% else %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <%= for file <- @uploaded_files do %>
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <!-- File Preview -->
+              <div class="aspect-square bg-gray-200 dark:bg-gray-600 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
+                <%= if file.file_type == "image" do %>
+                  <img
+                    src={Uploads.file_url(file)}
+                    alt={file.alt_text || file.original_filename}
+                    class="w-full h-full object-cover"
+                  />
+                <% else %>
+                  <.icon name={file_icon(file.file_type)} class="w-12 h-12 text-gray-400" />
+                <% end %>
+              </div>
+              
+<!-- File Info -->
+              <div class="space-y-2">
+                <h3
+                  class="font-medium text-gray-900 dark:text-white truncate"
+                  title={file.original_filename}
+                >
+                  {file.original_filename}
+                </h3>
+
+                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                  <span>{format_file_size(file.file_size)}</span>
+                  <span class="capitalize">{file.file_type}</span>
+                </div>
+
+                <div class="text-xs text-gray-400 dark:text-gray-500">
+                  Uploaded {Calendar.strftime(file.inserted_at, "%m/%d/%y")}
+                </div>
+              </div>
+              
+<!-- Actions -->
+              <div class="mt-4 flex space-x-2">
+                <button
+                  phx-click="copy-url"
+                  phx-value-url={url(~p"/") <> Uploads.file_url(file)}
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-2 rounded font-medium transition-colors"
+                  title="Copy URL"
+                >
+                  Copy URL
+                </button>
+
+                <.link
+                  patch={~p"/admin/files/#{file}/edit"}
+                  class="bg-gray-600 hover:bg-gray-700 text-white text-xs px-3 py-2 rounded font-medium transition-colors"
+                  title="Edit"
+                >
+                  Edit
+                </.link>
+
+                <button
+                  phx-click="delete"
+                  phx-value-id={file.id}
+                  data-confirm="Are you sure you want to delete this file? This action cannot be undone."
+                  class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded font-medium transition-colors"
+                  title="Delete"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="uploaded_file-modal"
+  show
+  on_cancel={JS.patch(~p"/admin/files")}
+>
+  <.live_component
+    module={MyhpWeb.UploadedFileLive.FormComponent}
+    id={@uploaded_file.id || :new}
+    title={@page_title}
+    action={@live_action}
+    uploaded_file={@uploaded_file}
+    patch={~p"/admin/files"}
+  />
+</.modal>
+
+<script>
+  window.addEventListener('phx:copy-to-clipboard', (e) => {
+    navigator.clipboard.writeText(e.detail.text).then(() => {
+      // You could show a toast notification here
+      console.log('URL copied to clipboard');
+    });
+  });
+</script>

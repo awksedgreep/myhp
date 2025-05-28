@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
+  <url>
+    <loc><%= MyhpWeb.Endpoint.url() %>/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Blog Index -->
+  <url>
+    <loc><%= MyhpWeb.Endpoint.url() %>/blog</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Blog Posts -->
+  <%= for post <- @posts do %>
+  <url>
+    <loc><%= MyhpWeb.Endpoint.url() %>/blog/<%= post.id %></loc>
+    <lastmod><%= format_datetime(post.published_at || post.inserted_at) %></lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <% end %>
+
+  <!-- Portfolio Index -->
+  <url>
+    <loc><%= MyhpWeb.Endpoint.url() %>/portfolio</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Portfolio Projects -->
+  <%= for project <- @projects do %>
+  <url>
+    <loc><%= MyhpWeb.Endpoint.url() %>/portfolio/<%= project.id %></loc>
+    <lastmod><%= format_datetime(project.inserted_at) %></lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <% end %>
+
+  <!-- Search -->
+  <url>
+    <loc><%= MyhpWeb.Endpoint.url() %>/search</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc><%= MyhpWeb.Endpoint.url() %>/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Resume -->
+  <url>
+    <loc><%= MyhpWeb.Endpoint.url() %>/resume</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- RSS Feed -->
+  <url>
+    <loc><%= MyhpWeb.Endpoint.url() %>/rss</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

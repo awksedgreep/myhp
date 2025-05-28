@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    
+<!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content={
+        assigns[:page_description] ||
+          "Mark Cotner's personal homepage featuring blog posts about software engineering, portfolio projects, and tech insights."
+      }
+    />
+    <meta name="author" content="Mark Cotner" />
+    <meta name="robots" content="index, follow" />
+    
+<!-- Open Graph -->
+    <meta property="og:title" content={assigns[:page_title] || "Mark Cotner - Personal Homepage"} />
+    <meta
+      property="og:description"
+      content={
+        assigns[:page_description] || "Software Engineer, Tech Enthusiast, and Problem Solver"
+      }
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={assigns[:current_url] || "https://your-domain.com"} />
+    <meta property="og:site_name" content="Mark Cotner" />
+    
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content={assigns[:page_title] || "Mark Cotner - Personal Homepage"}
+    />
+    <meta
+      name="twitter:description"
+      content={
+        assigns[:page_description] || "Software Engineer, Tech Enthusiast, and Problem Solver"
+      }
+    />
+    
+<!-- Canonical URL -->
+    <link rel="canonical" href={assigns[:current_url] || "https://your-domain.com"} />
+    
+<!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="MyHP Blog RSS Feed" href="/rss" />
+
+    <.live_title default="Mark Cotner - Personal Homepage" suffix=" · Mark Cotner">
+      {assigns[:page_title]}
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js">
+    </script>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 antialiased"
+    x-data="{ darkMode: false }"
+    x-init="
+    darkMode = localStorage.getItem('darkMode') === 'true';
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    }
+    $watch('darkMode', val => {
+      localStorage.setItem('darkMode', val);
+      if (val) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })
+  "
+  >
+    <div class="min-h-screen flex flex-col">
+      <!-- Navigation -->
+      <div x-data="{ toggleTheme() { this.$parent.darkMode = !this.$parent.darkMode } }">
+        <MyhpWeb.Components.Navigation.navbar
+          current_user={@current_user}
+        />
+      </div>
+      
+<!-- Flash messages -->
+      <.flash_group flash={@flash} />
+      
+<!-- Main content -->
+      <main class="flex-1 bg-gray-50 dark:bg-gray-900">
+        {@inner_content}
+      </main>
+      
+<!-- Footer -->
+      <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-4">
+              <span class="text-gray-600 dark:text-gray-400 text-sm">
+                © 2024 Mark Cotner. Built with Phoenix LiveView.
+              </span>
+            </div>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+              <a
+                href="/rss"
+                class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
+                title="RSS Feed"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.71-7.118-15.758-15.839-15.82zm0-3.368c10.58.046 19.152 8.594 19.183 19.188h4.817c-.03-13.231-10.755-23.954-24-24v4.812z"/>
+                </svg>
+              </a>
+              <a
+                href="/search"
+                class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
+                title="Search"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

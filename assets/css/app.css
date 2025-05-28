@@ -1,0 +1,88 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* This file is for your main application CSS */
+
+/* Force dark mode styling for contact form - multiple selectors for maximum specificity */
+html.dark .contact-form-container,
+.dark .contact-form-container,
+body.dark .contact-form-container,
+[class*="dark"] .contact-form-container {
+  background-color: rgb(31 41 55) !important; /* gray-800 */
+  background: rgb(31 41 55) !important;
+}
+
+/* Also try targeting it without the class */
+.contact-form-container {
+  background-color: rgb(31 41 55);
+}
+
+/* Enhanced prose styling for better dark mode contrast */
+html.dark .prose,
+.dark .prose,
+[data-theme="dark"] .prose {
+  color: rgb(229 231 235) !important; /* gray-200 */
+}
+
+html.dark .prose p,
+.dark .prose p,
+[data-theme="dark"] .prose p,
+html.dark .prose div,
+.dark .prose div,
+[data-theme="dark"] .prose div {
+  color: rgb(229 231 235) !important; /* gray-200 */
+}
+
+html.dark .prose h1, 
+.dark .prose h1,
+html.dark .prose h2, 
+.dark .prose h2,
+html.dark .prose h3, 
+.dark .prose h3,
+html.dark .prose h4, 
+.dark .prose h4,
+html.dark .prose h5, 
+.dark .prose h5,
+html.dark .prose h6,
+.dark .prose h6 {
+  color: rgb(255 255 255) !important; /* white */
+}
+
+html.dark .prose strong,
+.dark .prose strong {
+  color: rgb(255 255 255) !important; /* white */
+}
+
+html.dark .prose code,
+.dark .prose code {
+  color: rgb(229 231 235) !important; /* gray-200 */
+  background-color: rgb(55 65 81) !important; /* gray-700 */
+}
+
+html.dark .prose blockquote,
+.dark .prose blockquote {
+  color: rgb(156 163 175) !important; /* gray-400 */
+  border-left-color: rgb(75 85 99) !important; /* gray-600 */
+}
+
+/* Additional specificity for any remaining dark text */
+html.dark .prose *,
+.dark .prose * {
+  color: rgb(229 231 235) !important; /* gray-200 */
+}
+
+html.dark .prose h1 *,
+.dark .prose h1 *,
+html.dark .prose h2 *,
+.dark .prose h2 *,
+html.dark .prose h3 *,
+.dark .prose h3 *,
+html.dark .prose h4 *,
+.dark .prose h4 *,
+html.dark .prose h5 *,
+.dark .prose h5 *,
+html.dark .prose h6 *,
+.dark .prose h6 * {
+  color: rgb(255 255 255) !important; /* white */
+}

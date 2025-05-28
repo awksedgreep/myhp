@@ -1,0 +1,73 @@
+<article class="max-w-4xl mx-auto py-8">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 mb-8">
+    <header class="mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <.back navigate={~p"/blog"}>
+          Back to Blog
+        </.back>
+        <%= if @current_user do %>
+          <.link patch={~p"/blog/#{@post}/show/edit"} phx-click={JS.push_focus()}>
+            <.button>Edit Post</.button>
+          </.link>
+        <% end %>
+      </div>
+
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{@post.title}</h1>
+
+      <div class="flex items-center text-gray-600 dark:text-gray-300 mb-6">
+        <%= if @post.published_at do %>
+          <time datetime={@post.published_at} class="text-sm">
+            Published on {Calendar.strftime(@post.published_at, "%B %d, %Y")}
+          </time>
+        <% end %>
+        <%= unless @post.published do %>
+          <span class="ml-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
+            Draft
+          </span>
+        <% end %>
+      </div>
+    </header>
+
+    <div class="prose prose-lg max-w-none dark:prose-invert text-gray-800 dark:text-gray-200">
+      {markdown_to_html(@post.content) |> raw}
+    </div>
+
+    <footer class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+      <div class="flex items-center justify-between">
+        <.back navigate={~p"/blog"}>
+          Back to All Posts
+        </.back>
+
+        <%= if @current_user do %>
+          <div class="flex space-x-4">
+            <.link
+              patch={~p"/blog/#{@post}/show/edit"}
+              class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            >
+              Edit Post
+            </.link>
+          </div>
+        <% end %>
+      </div>
+    </footer>
+  </div>
+  
+<!-- Comments Section -->
+  <.live_component
+    module={MyhpWeb.Components.Comments}
+    id="post-comments"
+    post={@post}
+    current_user={@current_user}
+  />
+</article>
+
+<.modal :if={@live_action == :edit} id="post-modal" show on_cancel={JS.patch(~p"/blog/#{@post}")}>
+  <.live_component
+    module={MyhpWeb.PostLive.FormComponent}
+    id={@post.id}
+    title={@page_title}
+    action={@live_action}
+    post={@post}
+    patch={~p"/blog/#{@post}"}
+  />
+</.modal>

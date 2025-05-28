@@ -1,0 +1,58 @@
+.git
+.gitignore
+README.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Build artifacts
+_build
+deps
+.elixir_ls
+.mix
+
+# Node modules
+node_modules
+assets/node_modules
+
+# Test files
+test
+cover
+
+# Development files
+.env
+.env.local
+.env.development
+.env.test
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs
+
+# Temporary files
+tmp
+temp
+
+# Coverage reports
+cover
+coverage
+
+# Database files (will be mounted as volume)
+*.db
+*.sqlite
+*.sqlite3
+
+# Upload directories (will be mounted as volume)
+priv/static/uploads
+uploads
