@@ -48,7 +48,16 @@ After successful deployment, run migrations:
 fly ssh console -C "/app/bin/myhp eval 'Myhp.Release.migrate'"
 ```
 
-### 6. Seed Database
+### 6. Configure Admin Credentials
+
+Set your admin credentials as secure Fly secrets:
+
+```bash
+fly secrets set ADMIN_EMAIL="your-admin@email.com" 
+fly secrets set ADMIN_PASSWORD="your-secure-password"
+```
+
+### 7. Seed Database
 
 Populate the database with initial data:
 
@@ -58,9 +67,10 @@ fly ssh console -C "/app/bin/myhp eval 'Myhp.Release.seed'"
 
 ## Admin Credentials
 
-After seeding, you can log in with:
-- **Email**: mark.cotner@gmail.com
-- **Password**: b4sk3tb4ll 15 4 fun sp0rt
+The seed script will create an admin user with the credentials you specified in the environment variables. Make sure to:
+- Use a strong, unique password
+- Store your credentials securely in a password manager
+- Never commit actual credentials to your repository
 
 ## Important Notes
 

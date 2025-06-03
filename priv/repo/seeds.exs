@@ -17,15 +17,23 @@ alias Myhp.Chat.Message
 
 # Create admin user
 admin_user = %User{
-  email: "mark.cotner@gmail.com",
-  hashed_password: Bcrypt.hash_pwd_salt("b4sk3tb4ll 15 4 fun sp0rt"),
+  email: System.get_env("ADMIN_EMAIL") || "admin@example.com",
+  hashed_password:
+    if admin_pw = System.get_env("ADMIN_PASSWORD") do
+      Bcrypt.hash_pwd_salt(admin_pw)
+    else
+      IO.puts("\n⚠️ Warning: ADMIN_PASSWORD not set. Admin user will not be created.")
+      nil
+    end,
   confirmed_at: DateTime.utc_now() |> DateTime.truncate(:second)
 }
 
 admin =
-  case Repo.get_by(User, email: "mark.cotner@gmail.com") do
-    nil -> Repo.insert!(admin_user)
-    user -> user
+  if admin_user.hashed_password do
+    case Repo.get_by(User, email: admin_user.email) do
+      nil -> Repo.insert!(admin_user)
+      user -> user
+    end
   end
 
 # Create sample users for chat
