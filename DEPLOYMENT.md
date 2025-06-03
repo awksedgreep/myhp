@@ -65,6 +65,8 @@ Populate the database with initial data:
 fly ssh console -C "/app/bin/myhp eval 'Myhp.Release.seed'"
 ```
 
+Note: Make sure you have implemented the `Myhp.Release.seed/0` function in `lib/myhp/release.ex` before running this command.
+
 ## Admin Credentials
 
 The seed script will create an admin user with the credentials you specified in the environment variables. Make sure to:
