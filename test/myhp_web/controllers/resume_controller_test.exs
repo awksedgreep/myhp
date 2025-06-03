@@ -45,8 +45,30 @@ defmodule MyhpWeb.ResumeControllerTest do
   end
 
   describe "GET /resume" do
-    test "displays resume file inline when it exists", %{conn: conn} do
+    test "displays resume landing page when resume exists", %{conn: conn} do
       conn = get(conn, ~p"/resume")
+      
+      assert html_response(conn, 200)
+      assert response(conn, 200) =~ "Resume & CV"
+      assert response(conn, 200) =~ "View Online"
+      assert response(conn, 200) =~ "Download PDF"
+    end
+
+    test "displays resume landing page when resume missing", %{conn: conn, resume_path: resume_path} do
+      # Remove the test file
+      File.rm!(resume_path)
+      
+      conn = get(conn, ~p"/resume")
+      
+      assert html_response(conn, 200)
+      assert response(conn, 200) =~ "Resume Coming Soon"
+      assert response(conn, 200) =~ "View My Portfolio"
+    end
+  end
+
+  describe "GET /resume/view" do
+    test "displays resume file inline when it exists", %{conn: conn} do
+      conn = get(conn, ~p"/resume/view")
       
       assert response(conn, 200)
       assert get_resp_header(conn, "content-type") == ["application/pdf; charset=utf-8"]
@@ -61,7 +83,7 @@ defmodule MyhpWeb.ResumeControllerTest do
       # Remove the test file
       File.rm!(resume_path)
       
-      conn = get(conn, ~p"/resume")
+      conn = get(conn, ~p"/resume/view")
       
       assert redirected_to(conn) == ~p"/"
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~ "Resume file not found"
@@ -69,8 +91,19 @@ defmodule MyhpWeb.ResumeControllerTest do
   end
 
   describe "GET /cv" do
-    test "cv route works as alias for resume view", %{conn: conn} do
+    test "cv route works as alias for resume landing page", %{conn: conn} do
       conn = get(conn, ~p"/cv")
+      
+      assert html_response(conn, 200)
+      assert response(conn, 200) =~ "Resume & CV"
+      assert response(conn, 200) =~ "View Online"
+      assert response(conn, 200) =~ "Download PDF"
+    end
+  end
+
+  describe "GET /cv/view" do
+    test "cv view route works as alias for resume view", %{conn: conn} do
+      conn = get(conn, ~p"/cv/view")
       
       assert response(conn, 200)
       assert get_resp_header(conn, "content-type") == ["application/pdf; charset=utf-8"]

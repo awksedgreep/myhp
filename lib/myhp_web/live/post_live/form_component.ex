@@ -14,7 +14,7 @@ defmodule MyhpWeb.PostLive.FormComponent do
 
       <.simple_form
         for={@form}
-        id="post-form"
+        id={"post-form-#{@id}"}
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"

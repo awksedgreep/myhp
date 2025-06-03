@@ -53,6 +53,7 @@ defmodule MyhpWeb.PostLive.Index do
       socket
       |> assign(:has_posts, true)
       |> stream_insert(:posts, post)
+      |> push_patch(to: ~p"/blog")
     
     {:noreply, socket}
   end

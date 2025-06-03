@@ -14,7 +14,7 @@ defmodule MyhpWeb.UploadedFileLive.FormComponent do
 
       <.simple_form
         for={@form}
-        id="uploaded_file-form"
+        id={"uploaded_file-form-#{@id}"}
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"

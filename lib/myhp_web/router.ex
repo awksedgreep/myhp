@@ -31,9 +31,11 @@ defmodule MyhpWeb.Router do
     get "/robots.txt", SitemapController, :robots
 
     # Resume/CV routes
-    get "/resume", ResumeController, :view
+    get "/resume", ResumeController, :index
+    get "/resume/view", ResumeController, :view
     get "/resume/download", ResumeController, :download
-    get "/cv", ResumeController, :view
+    get "/cv", ResumeController, :index
+    get "/cv/view", ResumeController, :view
     get "/cv/download", ResumeController, :download
   end
 

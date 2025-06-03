@@ -14,7 +14,7 @@ defmodule MyhpWeb.ContactMessageLive.FormComponent do
 
       <.simple_form
         for={@form}
-        id="contact_message-form"
+        id={"contact_message-form-#{@id}"}
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"

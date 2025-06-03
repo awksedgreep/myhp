@@ -14,7 +14,7 @@ defmodule MyhpWeb.MessageLive.FormComponent do
 
       <.simple_form
         for={@form}
-        id="message-form"
+        id={"message-form-#{@id}"}
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"

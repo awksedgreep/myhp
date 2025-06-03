@@ -122,6 +122,7 @@ defmodule MyhpWeb.UploadedFileLive.Index do
       socket
       |> assign(:uploaded_files, list_uploaded_files(socket))
       |> assign(:upload_stats, Uploads.upload_stats())
+      |> push_patch(to: ~p"/admin/files")
 
     {:noreply, socket}
   end

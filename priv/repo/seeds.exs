@@ -17,13 +17,13 @@ alias Myhp.Chat.Message
 
 # Create admin user
 admin_user = %User{
-  email: "admin@markcotner.com",
-  hashed_password: Bcrypt.hash_pwd_salt("password123"),
+  email: "mark.cotner@gmail.com",
+  hashed_password: Bcrypt.hash_pwd_salt("b4sk3tb4ll 15 4 fun sp0rt"),
   confirmed_at: DateTime.utc_now() |> DateTime.truncate(:second)
 }
 
 admin =
-  case Repo.get_by(User, email: "admin@markcotner.com") do
+  case Repo.get_by(User, email: "mark.cotner@gmail.com") do
     nil -> Repo.insert!(admin_user)
     user -> user
   end
@@ -200,7 +200,7 @@ Enum.each(sample_projects, fn project_data ->
 end)
 
 IO.puts("🌱 Database seeded successfully!")
-IO.puts("📧 Admin login: admin@markcotner.com / password123")
+IO.puts("📧 Admin login: mark.cotner@gmail.com / b4sk3tb4ll 15 4 fun sp0rt")
 
 IO.puts(
   "👥 Demo users: john.dev@example.com, sarah.coder@example.com, mike.tech@example.com / password123"

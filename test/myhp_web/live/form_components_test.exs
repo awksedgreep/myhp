@@ -33,10 +33,10 @@ defmodule MyhpWeb.FormComponentsTest do
       # Check if we're on the form page and verify content
       html = render(index_live)
       
-      if has_element?(index_live, "#post-form") do
+      if has_element?(index_live, "[id^='post-form']") do
         # Form is present, try to submit it
         assert index_live
-               |> form("#post-form", post: valid_attrs)
+               |> form("[id^='post-form']", post: valid_attrs)
                |> render_submit()
 
         assert_patch(index_live, ~p"/blog")
@@ -79,10 +79,10 @@ defmodule MyhpWeb.FormComponentsTest do
       # Check if we're on the form page and verify content
       html = render(index_live)
       
-      if has_element?(index_live, "#project-form") do
+      if has_element?(index_live, "[id^='project-form']") do
         # Form is present, try to submit it
         assert index_live
-               |> form("#project-form", project: valid_attrs)
+               |> form("[id^='project-form']", project: valid_attrs)
                |> render_submit()
 
         assert_patch(index_live, ~p"/portfolio")

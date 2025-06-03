@@ -84,6 +84,9 @@ defmodule MyhpWeb.ContactMessageLive.Index do
   @impl true
   def handle_info({MyhpWeb.ContactMessageLive.FormComponent, {:saved, _contact_message}}, socket) do
     messages = Contact.list_contact_messages()
-    {:noreply, assign(socket, :messages, messages)}
+    {:noreply, 
+     socket
+     |> assign(:messages, messages)
+     |> push_patch(to: ~p"/admin/contact-messages")}
   end
 end

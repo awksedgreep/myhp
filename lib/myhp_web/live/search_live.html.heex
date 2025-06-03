@@ -116,11 +116,11 @@
                   <p class="text-gray-600 dark:text-gray-400 mb-3">
                     {project.description}
                   </p>
-                  <%= if project.technologies && project.technologies != [] do %>
+                  <%= if project.technologies && project.technologies != "" do %>
                     <div class="flex flex-wrap gap-2">
-                      <%= for tech <- project.technologies do %>
+                      <%= for tech <- String.split(project.technologies, ",") do %>
                         <span class="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full">
-                          {tech}
+                          {String.trim(tech)}
                         </span>
                       <% end %>
                     </div>

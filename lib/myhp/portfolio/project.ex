@@ -33,7 +33,7 @@ defmodule Myhp.Portfolio.Project do
     |> validate_length(:description, min: 10, max: 1000)
     |> validate_url(:github_url)
     |> validate_url(:live_url)
-    |> validate_url(:image_url)
+    |> validate_image_url(:image_url)
   end
 
   defp validate_url(changeset, field) do
@@ -42,6 +42,25 @@ defmodule Myhp.Portfolio.Project do
         case URI.parse(value) do
           %URI{scheme: scheme} when scheme in ["http", "https"] -> []
           _ -> [{field, "must be a valid URL"}]
+        end
+      else
+        []
+      end
+    end)
+  end
+
+  defp validate_image_url(changeset, field) do
+    validate_change(changeset, field, fn field, value ->
+      if value && String.trim(value) != "" do
+        cond do
+          # Allow local paths starting with /images/
+          String.starts_with?(value, "/images/") -> []
+          
+          # Allow valid HTTP/HTTPS URLs
+          match?(%URI{scheme: scheme} when scheme in ["http", "https"], URI.parse(value)) -> []
+          
+          # Reject invalid formats
+          true -> [{field, "must be a valid URL or local image path (/images/...)"}]
         end
       else
         []

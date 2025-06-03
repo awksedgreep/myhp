@@ -54,9 +54,9 @@ defmodule MyhpWeb.AdminLiveTest do
       # Check if we're on the correct page and if form exists
       html = render(social_live)
       
-      if has_element?(social_live, "#social-form") or has_element?(social_live, "form[phx-submit='save_social']") do
+      if has_element?(social_live, "[id^='social-form']") or has_element?(social_live, "form[phx-submit='save_social']") do
         # Form is present, try to submit it
-        form_selector = if has_element?(social_live, "#social-form"), do: "#social-form", else: "form[phx-submit='save_social']"
+        form_selector = if has_element?(social_live, "[id^='social-form']"), do: "[id^='social-form']", else: "form[phx-submit='save_social']"
         
         assert social_live
                |> form(form_selector, social: social_data)

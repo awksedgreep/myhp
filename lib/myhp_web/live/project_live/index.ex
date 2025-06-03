@@ -66,7 +66,8 @@ defmodule MyhpWeb.ProjectLive.Index do
      socket
      |> assign(:projects, projects)
      |> assign(:featured_projects, featured_projects)
-     |> assign(:other_projects, other_projects)}
+     |> assign(:other_projects, other_projects)
+     |> push_navigate(to: ~p"/portfolio")}
   end
 
   @impl true

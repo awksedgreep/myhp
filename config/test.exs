@@ -26,8 +26,8 @@ config :myhp, Myhp.Mailer, adapter: Swoosh.Adapters.Test
 # Disable swoosh api client as it is only required for production adapters
 config :swoosh, :api_client, false
 
-# Print only warnings and errors during test
-config :logger, level: :warning
+# Print only errors during test
+config :logger, level: :error
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
@@ -35,3 +35,10 @@ config :phoenix, :plug_init_mode, :runtime
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
+
+# Configure LiveView test mode to raise on duplicate IDs instead of warning
+config :phoenix_live_view, :test_mode, on_error: :raise
+
+# Reduce test output verbosity
+config :phoenix_live_view, :debug_heex_annotations, false
+config :logger, :console, level: :error, format: "[$level] $message\n"

@@ -1,6 +1,17 @@
 defmodule MyhpWeb.ResumeController do
   use MyhpWeb, :controller
 
+  def index(conn, _params) do
+    resume_path = Application.app_dir(:myhp, "priv/static/resume.pdf")
+    resume_exists = File.exists?(resume_path)
+    
+    conn
+    |> assign(:page_title, "Resume")
+    |> assign(:current_page, "resume")
+    |> assign(:resume_exists, resume_exists)
+    |> render(:index)
+  end
+
   def download(conn, _params) do
     resume_path = Application.app_dir(:myhp, "priv/static/resume.pdf")
 
