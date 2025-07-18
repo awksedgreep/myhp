@@ -1,0 +1,15 @@
+<!-- Save as: priv/static/favicon.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Top ellipse -->
+  <ellipse cx="32" cy="16" rx="18" ry="7" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+  <!-- Middle section -->
+  <rect x="14" y="16" width="36" height="12" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+  <!-- Middle ellipse -->
+  <ellipse cx="32" cy="28" rx="18" ry="7" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+  <!-- Lower section -->
+  <rect x="14" y="28" width="36" height="12" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+  <!-- Bottom ellipse -->
+  <ellipse cx="32" cy="40" rx="18" ry="7" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+  <!-- Subtle highlight on top -->
+  <ellipse cx="32" cy="15" rx="10" ry="3" fill="none" stroke="#FFF8DC" stroke-width="1.2"/>
+</svg>
