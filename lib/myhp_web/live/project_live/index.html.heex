@@ -12,7 +12,7 @@
         </p>
         <%= if @current_user do %>
           <div class="mt-8">
-            <.link patch={~p"/portfolio/new"}>
+            <.link navigate={~p"/portfolio/new"}>
               <.button class="bg-white text-blue-600 hover:bg-gray-100">
                 Add New Project
               </.button>
@@ -64,7 +64,7 @@
                   <%= if @current_user do %>
                     <div class="flex space-x-2">
                       <.link
-                        patch={~p"/portfolio/#{project}/edit"}
+                        navigate={~p"/portfolio/#{project}/edit"}
                         class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,7 +181,7 @@
                   <%= if @current_user do %>
                     <div class="flex space-x-2">
                       <.link
-                        patch={~p"/portfolio/#{project}/edit"}
+                        navigate={~p"/portfolio/#{project}/edit"}
                         class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -295,7 +295,7 @@
           </p>
           <%= if @current_user do %>
             <div class="mt-6">
-              <.link patch={~p"/portfolio/new"}>
+              <.link navigate={~p"/portfolio/new"}>
                 <.button>Add Project</.button>
               </.link>
             </div>
