@@ -39,6 +39,52 @@ defmodule MyhpWeb.Router do
     get "/cv/download", ResumeController, :download
   end
 
+  # Authenticated live routes (must come before public routes with :id params)
+  live_session :authenticated, on_mount: [{MyhpWeb.UserAuth, :ensure_authenticated}] do
+    scope "/", MyhpWeb do
+      pipe_through [:browser, :require_authenticated_user]
+
+      # Admin blog routes (require authentication)
+      live "/blog/new", PostLive.Index, :new
+      live "/blog/:id/edit", PostLive.Index, :edit
+      live "/blog/:id/show/edit", PostLive.Show, :edit
+
+      # Admin portfolio routes (require authentication)
+      live "/portfolio/new", ProjectLive.Index, :new
+      live "/portfolio/:id/edit", ProjectLive.Index, :edit
+      live "/portfolio/:id/show/edit", ProjectLive.Show, :edit
+
+      # Admin file management routes (require authentication)
+      live "/admin/files", UploadedFileLive.Index, :index
+      live "/admin/files/new", UploadedFileLive.Index, :new
+      live "/admin/files/:id/edit", UploadedFileLive.Index, :edit
+
+      # Admin contact message routes (require authentication)
+      live "/admin/contact-messages", ContactMessageLive.Index, :index
+      live "/admin/contact-messages/:id", ContactMessageLive.Show, :show
+      live "/admin/contact-messages/:id/edit", ContactMessageLive.Index, :edit
+
+      # Admin user management routes (require authentication)
+      live "/admin/users", Admin.UserLive, :index
+      live "/admin/users/:id", Admin.UserLive, :show
+
+      # Admin analytics routes (require authentication)
+      live "/admin/analytics", Admin.AnalyticsLive, :index
+
+      # Admin social media routes (require authentication)
+      live "/admin/social", Admin.SocialLive, :index
+
+      # Chat route (require authentication)
+      live "/chat", MessageLive.Index, :index
+
+      # Activity feed (require authentication)
+      live "/activity", ActivityLive, :index
+
+      # Notifications (require authentication)
+      live "/notifications", NotificationLive, :index
+    end
+  end
+
   # Public live routes (with user detection)
   live_session :public, on_mount: [{MyhpWeb.UserAuth, :mount_current_user}] do
     scope "/", MyhpWeb do
@@ -110,58 +156,12 @@ defmodule MyhpWeb.Router do
 
     # Admin dashboard
     get "/admin", AdminController, :index
-    
+
     # Admin user management actions
     post "/admin/users/:id/toggle_admin", AdminController, :toggle_admin
     post "/admin/users/:id/ban", AdminController, :ban_user
     post "/admin/users/:id/unban", AdminController, :unban_user
     delete "/admin/users/:id", AdminController, :delete_user
-  end
-
-  # Authenticated live routes
-  live_session :authenticated, on_mount: [{MyhpWeb.UserAuth, :ensure_authenticated}] do
-    scope "/", MyhpWeb do
-      pipe_through [:browser, :require_authenticated_user]
-
-      # Admin blog routes (require authentication)
-      live "/blog/new", PostLive.Index, :new
-      live "/blog/:id/edit", PostLive.Index, :edit
-      live "/blog/:id/show/edit", PostLive.Show, :edit
-
-      # Admin portfolio routes (require authentication)
-      live "/portfolio/new", ProjectLive.Index, :new
-      live "/portfolio/:id/edit", ProjectLive.Index, :edit
-      live "/portfolio/:id/show/edit", ProjectLive.Show, :edit
-
-      # Admin file management routes (require authentication)
-      live "/admin/files", UploadedFileLive.Index, :index
-      live "/admin/files/new", UploadedFileLive.Index, :new
-      live "/admin/files/:id/edit", UploadedFileLive.Index, :edit
-
-      # Admin contact message routes (require authentication)
-      live "/admin/contact-messages", ContactMessageLive.Index, :index
-      live "/admin/contact-messages/:id", ContactMessageLive.Show, :show
-      live "/admin/contact-messages/:id/edit", ContactMessageLive.Index, :edit
-
-      # Admin user management routes (require authentication)
-      live "/admin/users", Admin.UserLive, :index
-      live "/admin/users/:id", Admin.UserLive, :show
-
-      # Admin analytics routes (require authentication)
-      live "/admin/analytics", Admin.AnalyticsLive, :index
-
-      # Admin social media routes (require authentication)
-      live "/admin/social", Admin.SocialLive, :index
-
-      # Chat route (require authentication)
-      live "/chat", MessageLive.Index, :index
-
-      # Activity feed (require authentication)
-      live "/activity", ActivityLive, :index
-
-      # Notifications (require authentication)
-      live "/notifications", NotificationLive, :index
-    end
   end
 
   scope "/", MyhpWeb do
