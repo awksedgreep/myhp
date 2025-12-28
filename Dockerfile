@@ -21,8 +21,12 @@ ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
-RUN apt-get update -y && apt-get install -y build-essential wget git \
+RUN apt-get update -y && apt-get install -y build-essential wget git curl \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+# Install Node.js for Tailwind plugins
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
 # Install litestream
 ARG LITESTREAM_VERSION=0.3.13
@@ -55,6 +59,9 @@ COPY priv priv
 COPY lib lib
 
 COPY assets assets
+
+# install npm dependencies for Tailwind plugins
+RUN cd assets && npm install
 
 # compile assets
 RUN mix assets.deploy
