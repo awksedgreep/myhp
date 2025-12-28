@@ -46,8 +46,8 @@ defmodule MyhpWeb.PostLive.FormComponent do
               </div>
               <%= if @form[:content].errors != [] do %>
                 <div class="mt-1 text-sm text-red-600">
-                  <%= for error <- @form[:content].errors do %>
-                    <div>{error}</div>
+                  <%= for {msg, _opts} <- @form[:content].errors do %>
+                    <div>{msg}</div>
                   <% end %>
                 </div>
               <% end %>

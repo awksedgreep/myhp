@@ -64,7 +64,7 @@ defmodule MyhpWeb.PostLive.Index do
     {:ok, _} = Blog.delete_post(post)
 
     socket = stream_delete(socket, :posts, post)
-    
+
     # Check if we still have posts after deletion
     current_user = socket.assigns[:current_user]
     remaining_posts =
@@ -73,8 +73,12 @@ defmodule MyhpWeb.PostLive.Index do
       else
         Blog.list_published_posts()
       end
-    
-    socket = assign(socket, :has_posts, length(remaining_posts) > 0)
+
+    socket =
+      socket
+      |> assign(:has_posts, length(remaining_posts) > 0)
+      |> put_flash(:info, "Post deleted successfully")
+      |> push_navigate(to: ~p"/blog")
 
     {:noreply, socket}
   end
