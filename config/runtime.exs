@@ -106,7 +106,7 @@ if config_env() == :prod do
       """
 
   config :myhp, Myhp.Mailer,
-    adapter: Swoosh.Adapters.Resend,
+    adapter: Resend.Swoosh.Adapter,
     api_key: resend_api_key
 
   config :swoosh, :api_client, Swoosh.ApiClient.Finch

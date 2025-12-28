@@ -4,7 +4,7 @@ defmodule Myhp.MixProject do
   def project do
     [
       app: :myhp,
-      version: "0.3.8",
+      version: "0.3.9",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -52,6 +52,7 @@ defmodule Myhp.MixProject do
        compile: false,
        depth: 1},
       {:swoosh, "~> 1.17"},
+      {:resend, "~> 0.4"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
