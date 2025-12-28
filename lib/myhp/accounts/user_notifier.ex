@@ -82,4 +82,24 @@ defmodule Myhp.Accounts.UserNotifier do
     ==============================
     """)
   end
+
+  @doc """
+  Deliver notification of a new contact form submission.
+  """
+  def deliver_contact_notification(contact_message) do
+    deliver("mark.cotner@gmail.com", "New Contact Form Submission", """
+
+    ==============================
+
+    New message from your website contact form:
+
+    From: #{contact_message.name} <#{contact_message.email}>
+    Subject: #{contact_message.subject}
+
+    Message:
+    #{contact_message.message}
+
+    ==============================
+    """)
+  end
 end

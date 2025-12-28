@@ -3,6 +3,7 @@ defmodule MyhpWeb.ContactMessageLive.Index do
 
   alias Myhp.Contact
   alias Myhp.Contact.ContactMessage
+  alias Myhp.Accounts.UserNotifier
 
   @impl true
   def mount(_params, _session, socket) do
@@ -60,7 +61,9 @@ defmodule MyhpWeb.ContactMessageLive.Index do
 
   def handle_event("save", %{"contact_message" => contact_message_params}, socket) do
     case Contact.create_contact_message(contact_message_params) do
-      {:ok, _contact_message} ->
+      {:ok, contact_message} ->
+        UserNotifier.deliver_contact_notification(contact_message)
+
         {:noreply,
          socket
          |> put_flash(:info, "Thank you for your message! I'll get back to you soon.")
@@ -84,7 +87,7 @@ defmodule MyhpWeb.ContactMessageLive.Index do
   @impl true
   def handle_info({MyhpWeb.ContactMessageLive.FormComponent, {:saved, _contact_message}}, socket) do
     messages = Contact.list_contact_messages()
-    {:noreply, 
+    {:noreply,
      socket
      |> assign(:messages, messages)
      |> push_patch(to: ~p"/admin/contact-messages")}
