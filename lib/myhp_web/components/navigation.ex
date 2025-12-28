@@ -55,10 +55,10 @@ defmodule MyhpWeb.Components.Navigation do
 
     <!-- Right side - User menu -->
           <div class="flex items-center space-x-4">
-            <!-- Phoenix Logo -->
-            <a href="/" class="flex items-center">
-              <img src={~p"/images/logo.svg"} width="24" height="24" alt="Phoenix Framework" class="opacity-60 hover:opacity-80 transition-opacity" />
-            </a>
+            <!-- Phoenix Logo (Easter Egg) -->
+            <.link navigate={~p"/phoenix"} class="flex items-center" title="What's this?">
+              <img src={~p"/images/logo.svg"} width="24" height="24" alt="Phoenix Framework" class="opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200" />
+            </.link>
 
             <!-- Theme toggle -->
             <button

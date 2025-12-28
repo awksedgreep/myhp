@@ -103,6 +103,9 @@ defmodule MyhpWeb.Router do
 
       # Public contact route
       live "/contact", ContactMessageLive.Index, :new
+
+      # Easter egg
+      live "/phoenix", PhoenixLive, :index
     end
   end
 
