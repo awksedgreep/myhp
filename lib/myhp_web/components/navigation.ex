@@ -20,7 +20,7 @@ defmodule MyhpWeb.Components.Navigation do
               <span class="text-2xl font-bold text-gray-900 dark:text-white">Mark Cotner</span>
             </.link>
           </div>
-          
+
     <!-- Center - Main Navigation -->
           <div class="hidden md:flex items-center space-x-8">
             <.nav_link href={~p"/"}>
@@ -41,7 +41,7 @@ defmodule MyhpWeb.Components.Navigation do
             <.nav_link href={~p"/contact"}>
               Contact
             </.nav_link>
-            
+
     <!-- Authenticated only links -->
             <%= if @current_user do %>
               <.nav_link href={~p"/chat"}>
@@ -52,14 +52,14 @@ defmodule MyhpWeb.Components.Navigation do
               </.nav_link>
             <% end %>
           </div>
-          
+
     <!-- Right side - User menu -->
           <div class="flex items-center space-x-4">
             <!-- Phoenix Logo -->
             <a href="/" class="flex items-center">
               <img src={~p"/images/logo.svg"} width="24" height="24" alt="Phoenix Framework" class="opacity-60 hover:opacity-80 transition-opacity" />
             </a>
-            
+
             <!-- Theme toggle -->
             <button
               @click="toggleTheme()"
@@ -123,7 +123,7 @@ defmodule MyhpWeb.Components.Navigation do
                   x-transition:leave="transition ease-in duration-75"
                   x-transition:leave-start="transform opacity-100 scale-100"
                   x-transition:leave-end="transform opacity-0 scale-95"
-                  class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 border dark:border-gray-700"
+                  class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 border dark:border-gray-700"
                 >
                   <div class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-600">
                     {@current_user.email}
@@ -164,7 +164,7 @@ defmodule MyhpWeb.Components.Navigation do
                 Sign up
               </.link>
             <% end %>
-            
+
     <!-- Mobile menu button -->
             <button
               class="md:hidden p-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
@@ -184,7 +184,7 @@ defmodule MyhpWeb.Components.Navigation do
           </div>
         </div>
       </div>
-      
+
     <!-- Mobile menu -->
       <div
         class="md:hidden"
@@ -232,7 +232,7 @@ defmodule MyhpWeb.Components.Navigation do
       navigate={@href}
       class="px-3 py-2 text-sm font-medium transition-colors duration-200"
       {%{
-        "x-bind:class" => 
+        "x-bind:class" =>
           if @href == "/" do
             "(currentPath === '#{@href}') ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400' : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'"
           else
@@ -254,7 +254,7 @@ defmodule MyhpWeb.Components.Navigation do
       navigate={@href}
       class="block px-3 py-2 text-base font-medium transition-colors duration-200"
       {%{
-        "x-bind:class" => 
+        "x-bind:class" =>
           if @href == "/" do
             "(currentPath === '#{@href}') ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700'"
           else
