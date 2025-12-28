@@ -8,7 +8,7 @@ defmodule Myhp.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Mark Cotner", "mark.cotner@diablodata.com"})
+      |> from({"Mark Cotner", "onboarding@resend.dev"})
       |> subject(subject)
       |> text_body(body)
 
