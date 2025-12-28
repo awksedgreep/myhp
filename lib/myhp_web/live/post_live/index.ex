@@ -78,7 +78,6 @@ defmodule MyhpWeb.PostLive.Index do
       socket
       |> assign(:has_posts, length(remaining_posts) > 0)
       |> put_flash(:info, "Post deleted successfully")
-      |> push_navigate(to: ~p"/blog")
 
     {:noreply, socket}
   end

@@ -4,7 +4,7 @@ defmodule Myhp.MixProject do
   def project do
     [
       app: :myhp,
-      version: "0.3.17",
+      version: "0.3.18",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
