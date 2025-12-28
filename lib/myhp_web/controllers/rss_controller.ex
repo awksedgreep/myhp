@@ -8,7 +8,7 @@ defmodule MyhpWeb.RssController do
     xml_content = MyhpWeb.RssXML.render("feed.xml", %{posts: posts})
 
     conn
-    |> put_resp_content_type("application/rss+xml")
+    |> put_resp_content_type("text/xml")
     |> send_resp(200, xml_content)
   end
 end
