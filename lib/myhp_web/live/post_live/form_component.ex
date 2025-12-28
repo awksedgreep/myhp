@@ -116,10 +116,11 @@ defmodule MyhpWeb.PostLive.FormComponent do
       {:ok, post} ->
         notify_parent({:saved, post})
 
+        # Use push_navigate since /blog is in a different live_session
         {:noreply,
          socket
          |> put_flash(:info, "Post updated successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_navigate(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
@@ -134,10 +135,11 @@ defmodule MyhpWeb.PostLive.FormComponent do
       {:ok, post} ->
         notify_parent({:saved, post})
 
+        # Use push_navigate since /blog is in a different live_session
         {:noreply,
          socket
          |> put_flash(:info, "Post created successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_navigate(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
