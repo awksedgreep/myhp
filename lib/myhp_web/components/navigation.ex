@@ -134,12 +134,14 @@ defmodule MyhpWeb.Components.Navigation do
                   >
                     Settings
                   </.link>
-                  <.link
-                    href={~p"/admin"}
-                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    Admin
-                  </.link>
+                  <%= if @current_user.admin do %>
+                    <.link
+                      href={~p"/admin"}
+                      class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      Admin
+                    </.link>
+                  <% end %>
                   <.link
                     href={~p"/users/log_out"}
                     method="delete"
