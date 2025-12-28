@@ -84,6 +84,25 @@ defmodule Myhp.Accounts.UserNotifier do
   end
 
   @doc """
+  Deliver notification that password was changed.
+  """
+  def deliver_password_change_notification(user) do
+    deliver(user.email, "Your password has been changed", """
+
+    ==============================
+
+    Hi #{user.email},
+
+    Your password was just changed. If you made this change, you can ignore this email.
+
+    If you did NOT change your password, please reset it immediately at:
+    https://mcotner.online/users/reset_password
+
+    ==============================
+    """)
+  end
+
+  @doc """
   Deliver notification of a new contact form submission.
   """
   def deliver_contact_notification(contact_message) do
