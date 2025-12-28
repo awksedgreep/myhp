@@ -10,7 +10,7 @@
           A collection of projects showcasing my expertise in modern web development,
           real-time applications, and scalable solutions.
         </p>
-        <%= if @current_user do %>
+        <%= if @current_user && @current_user.admin do %>
           <div class="mt-8">
             <.link navigate={~p"/portfolio/new"}>
               <.button class="bg-white text-blue-600 hover:bg-gray-100">
@@ -53,7 +53,7 @@
                           {project.title}
                         </.link>
                       </h3>
-                      <%= if @current_user do %>
+                      <%= if @current_user && @current_user.admin do %>
                         <div class="flex space-x-2 ml-2">
                           <.link
                             navigate={~p"/portfolio/#{project}/edit"}
@@ -162,7 +162,7 @@
                           {project.title}
                         </.link>
                       </h3>
-                      <%= if @current_user do %>
+                      <%= if @current_user && @current_user.admin do %>
                         <div class="flex space-x-2 ml-2">
                           <.link
                             navigate={~p"/portfolio/#{project}/edit"}
@@ -273,7 +273,7 @@
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Get started by creating your first project.
           </p>
-          <%= if @current_user do %>
+          <%= if @current_user && @current_user.admin do %>
             <div class="mt-6">
               <.link navigate={~p"/portfolio/new"}>
                 <.button>Add Project</.button>

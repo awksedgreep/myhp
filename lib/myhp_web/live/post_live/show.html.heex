@@ -5,7 +5,7 @@
         <.back navigate={~p"/blog"}>
           Back to Blog
         </.back>
-        <%= if @current_user do %>
+        <%= if @current_user && @current_user.admin do %>
           <.link patch={~p"/blog/#{@post}/show/edit"} phx-click={JS.push_focus()}>
             <.button>Edit Post</.button>
           </.link>
@@ -38,7 +38,7 @@
           Back to All Posts
         </.back>
 
-        <%= if @current_user do %>
+        <%= if @current_user && @current_user.admin do %>
           <div class="flex space-x-4">
             <.link
               patch={~p"/blog/#{@post}/show/edit"}

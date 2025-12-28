@@ -6,7 +6,7 @@
         <.back navigate={~p"/portfolio"}>
           ← Back to Portfolio
         </.back>
-        <%= if @current_user do %>
+        <%= if @current_user && @current_user.admin do %>
           <.link
             patch={~p"/portfolio/#{@project}/show/edit"}
             class="bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded-lg font-medium transition-colors"
@@ -168,7 +168,7 @@
           ← Back to Portfolio
         </.back>
 
-        <%= if @current_user do %>
+        <%= if @current_user && @current_user.admin do %>
           <.link
             patch={~p"/portfolio/#{@project}/show/edit"}
             class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium transition-colors"

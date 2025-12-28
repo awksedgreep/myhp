@@ -8,7 +8,7 @@
       >
         <.icon name="hero-rss" class="w-4 h-4 mr-2" /> RSS Feed
       </.link>
-      <%= if @current_user do %>
+      <%= if @current_user && @current_user.admin do %>
         <.link patch={~p"/blog/new"}>
           <.button>New Post</.button>
         </.link>
@@ -48,7 +48,7 @@
             </div>
           </div>
 
-          <%= if @current_user do %>
+          <%= if @current_user && @current_user.admin do %>
             <div class="ml-4 flex space-x-2">
               <.link
                 patch={~p"/blog/#{post}/edit"}
@@ -114,7 +114,7 @@
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
         Get started by creating your first blog post.
       </p>
-      <%= if @current_user do %>
+      <%= if @current_user && @current_user.admin do %>
         <div class="mt-6">
           <.link patch={~p"/blog/new"}>
             <.button>New Post</.button>
