@@ -81,4 +81,34 @@ defmodule MyhpWeb.PostLive.Index do
 
     {:noreply, socket}
   end
+
+  @doc """
+  Extracts first ~500 chars of content and renders as markdown HTML.
+  """
+  def markdown_excerpt(content) when is_binary(content) do
+    # Get first ~500 characters, trying to break at paragraph or sentence
+    excerpt =
+      content
+      |> String.slice(0, 600)
+      |> String.split("\n\n")
+      |> Enum.take(3)
+      |> Enum.join("\n\n")
+      |> maybe_truncate(500)
+
+    case Earmark.as_html(excerpt) do
+      {:ok, html, _} -> html
+      {:error, _html, _errors} -> "<p>#{excerpt}</p>"
+    end
+  end
+
+  def markdown_excerpt(_), do: ""
+
+  defp maybe_truncate(text, max_length) when byte_size(text) > max_length do
+    text
+    |> String.slice(0, max_length)
+    |> String.replace(~r/\s+\S*$/, "")
+    |> Kernel.<>("...")
+  end
+
+  defp maybe_truncate(text, _max_length), do: text
 end
