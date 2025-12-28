@@ -105,6 +105,33 @@ defmodule MyhpWeb.MessageLive.Index do
   end
 
   @impl true
+  def handle_event("delete_message", %{"id" => id}, socket) do
+    current_user = socket.assigns.current_user
+
+    # Only admins can delete messages
+    if current_user.admin do
+      message = Chat.get_message!(id)
+
+      case Chat.delete_message(message) do
+        {:ok, _message} ->
+          # Broadcast deletion to all connected clients
+          Phoenix.PubSub.broadcast(
+            Myhp.PubSub,
+            @topic,
+            {:message_deleted, String.to_integer(id)}
+          )
+
+          {:noreply, socket}
+
+        {:error, _changeset} ->
+          {:noreply, put_flash(socket, :error, "Failed to delete message")}
+      end
+    else
+      {:noreply, put_flash(socket, :error, "Only admins can delete messages")}
+    end
+  end
+
+  @impl true
   def handle_info({:new_message, message}, socket) do
     # Keep only last 100 messages to prevent memory issues
     {:noreply,
@@ -114,6 +141,15 @@ defmodule MyhpWeb.MessageLive.Index do
        |> Enum.take(-100)
      end)
      |> push_event("scroll_to_bottom", %{})}
+  end
+
+  @impl true
+  def handle_info({:message_deleted, message_id}, socket) do
+    {:noreply,
+     socket
+     |> update(:messages, fn messages ->
+       Enum.reject(messages, fn msg -> msg.id == message_id end)
+     end)}
   end
 
   @impl true
