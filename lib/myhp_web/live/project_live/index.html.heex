@@ -72,9 +72,9 @@
                         </div>
                       <% end %>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-3">
-                      {project.description}
-                    </p>
+                    <div class="prose prose-sm dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 mb-3">
+                      {markdown_excerpt(project.description) |> raw}
+                    </div>
                   </div>
                 </div>
                 
@@ -196,9 +196,9 @@
                         </div>
                       <% end %>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
-                      {project.description}
-                    </p>
+                    <div class="prose prose-sm dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 mb-3">
+                      {markdown_excerpt(project.description) |> raw}
+                    </div>
                   </div>
                 </div>
                 

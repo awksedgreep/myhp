@@ -19,4 +19,11 @@ defmodule MyhpWeb.ProjectLive.Show do
 
   defp page_title(:show), do: "Show Project"
   defp page_title(:edit), do: "Edit Project"
+
+  defp markdown_to_html(markdown) do
+    case Earmark.as_html(markdown) do
+      {:ok, html, _} -> html
+      {:error, _html, _errors} -> "<p>Error rendering markdown</p>"
+    end
+  end
 end

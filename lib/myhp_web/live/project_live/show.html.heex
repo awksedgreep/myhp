@@ -103,8 +103,8 @@
     <div class="prose prose-lg max-w-none dark:prose-invert">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Project Overview</h2>
 
-      <div class="text-gray-700 dark:text-gray-300 leading-relaxed">
-        {String.replace(@project.description, "\n", "<br>") |> raw}
+      <div class="prose prose-lg dark:prose-invert max-w-none">
+        {markdown_to_html(@project.description) |> raw}
       </div>
       
 <!-- Technical Details -->

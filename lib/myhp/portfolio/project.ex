@@ -30,7 +30,7 @@ defmodule Myhp.Portfolio.Project do
     ])
     |> validate_required([:title, :description, :technologies])
     |> validate_length(:title, min: 3, max: 100)
-    |> validate_length(:description, min: 10, max: 1000)
+    |> validate_length(:description, min: 10, max: 10000)
     |> validate_url(:github_url)
     |> validate_url(:live_url)
     |> validate_image_url(:image_url)

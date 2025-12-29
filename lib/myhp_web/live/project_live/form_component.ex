@@ -165,7 +165,8 @@ defmodule MyhpWeb.ProjectLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Project updated successfully")}
+         |> put_flash(:info, "Project updated successfully")
+         |> push_navigate(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
@@ -179,7 +180,8 @@ defmodule MyhpWeb.ProjectLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Project created successfully")}
+         |> put_flash(:info, "Project created successfully")
+         |> push_navigate(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}

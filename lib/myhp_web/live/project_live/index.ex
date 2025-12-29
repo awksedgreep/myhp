@@ -92,4 +92,33 @@ defmodule MyhpWeb.ProjectLive.Index do
      |> assign(:featured_projects, featured_projects)
      |> assign(:other_projects, other_projects)}
   end
+
+  @doc """
+  Extracts first ~300 chars of description and renders as markdown HTML.
+  """
+  def markdown_excerpt(content) when is_binary(content) do
+    excerpt =
+      content
+      |> String.slice(0, 400)
+      |> String.split("\n\n")
+      |> Enum.take(2)
+      |> Enum.join("\n\n")
+      |> maybe_truncate(300)
+
+    case Earmark.as_html(excerpt) do
+      {:ok, html, _} -> html
+      {:error, _html, _errors} -> "<p>#{excerpt}</p>"
+    end
+  end
+
+  def markdown_excerpt(_), do: ""
+
+  defp maybe_truncate(text, max_length) when byte_size(text) > max_length do
+    text
+    |> String.slice(0, max_length)
+    |> String.replace(~r/\s+\S*$/, "")
+    |> Kernel.<>("...")
+  end
+
+  defp maybe_truncate(text, _max_length), do: text
 end
